@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pinturilla/models/drawn_line.dart';
+import 'package:pinturilla/widgets/paint_canvas.dart';
+import 'package:pinturilla/widgets/paint_toolbar.dart';
 
 class PaintPage extends StatefulWidget {
   const PaintPage({super.key});
@@ -41,6 +43,31 @@ class _PaintPageState extends State<PaintPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Pinturilla@'),
+        actions: [
+          IconButton(
+            onPressed: _clearCanvas,
+            tooltip: 'Limpiar lienzo', 
+            icon: const Icon(Icons.delete))
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: PaintCanvasWidget(
+              lines: _lines, 
+              onPanStart: _onPanStart, 
+              onPanUpdate: _onPanUpdate)
+          ),
+          PaintToolbar(
+            selectedColor: _selectedColor, 
+            selectedWidth: _selectedWidth, 
+            onColorSelected: (color) => setState(() => _selectedColor=color), 
+            onWidthChanged: (width) => setState(() => _selectedWidth=width)),
+        ],
+      ),
+    );
   }
 }
